@@ -1,10 +1,9 @@
 <template>
 	<div class="video-player-container">
 	<video-player
-	  src="/src/assets/cat.mp4"
+	  src="/src/assets/test.mp4"
 	  controls
 	  :loop="true"
-	  :volume="0.1"
 	  muted
 	/>
 	</div>
