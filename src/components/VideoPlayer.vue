@@ -1,13 +1,28 @@
 <template>
-	<div class="video-player-container">
-	<video-player
-	  src="/src/assets/test.mp4"
-	  controls
-	  :loop="true"
-	  muted
-	/>
+	<div class="videoplayer">
+	  <div class="video-container1">
+		<video-player
+		  id="video1"
+		  src="/src/assets/test.mp4"
+		  controls
+		  :loop="true"
+		  :volume="0.1"
+		  muted
+		/>
+	  </div>
+	  <div class="video-container2">
+		<video-player
+		  id="video2"
+		  src="/src/assets/test2.mp4"
+		  controls
+		  :loop="true"
+		  :volume="0.1"
+		  muted
+		/>
+	  </div>
 	</div>
-</template>
+  </template>
+
 
 <script>
 import { defineComponent } from 'vue'
@@ -23,34 +38,27 @@ export default defineComponent({
 
 
 <style scoped>
-/* styles for the video player container */
-.video-player-container {
+.videoplayer {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
 
-/* styles for the video player */
-.video-player {
-  /* center the video player */
-  margin: 0 auto;
+.video-container1 {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  position: absolute;
+  z-index: 2;
 }
 
-/* styles for the video player controls */
-.vjs-control-bar {
-  /* center the controls */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.video-container2 {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 0;
 }
 
-.video-js .vjs-big-play-button {
-  position: static !important;
-}
 
 
 </style>
