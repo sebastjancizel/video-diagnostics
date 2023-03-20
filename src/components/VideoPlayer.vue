@@ -1,65 +1,80 @@
 <template>
-	<div class="videoplayer">
-	  <div class="video-container1">
-		<video-player
-		  id="video1"
-		  src="/src/assets/test.mp4"
-		  controls
-		  :loop="true"
-		  :volume="0.1"
-		  muted
-		/>
-	  </div>
-	  <div class="video-container2">
-		<video-player
-		  id="video2"
-		  src="/src/assets/test2.mp4"
-		  controls
-		  :loop="true"
-		  :volume="0.1"
-		  muted
-		/>
+	<div class="video-compare-container" ref="container">
+	  <video class="video-main" loop autoplay muted controls ref="mainVideo">
+		<source :src="mainVideoSrc" type="video/mp4">
+	  </video>
+	  <div class="video-clipper" ref="clipper">
+		<video class="video-clipped" loop autoplay muted controls ref="clippedVideo">
+		  <source :src="clippedVideoSrc" type="video/mp4">
+		</video>
 	  </div>
 	</div>
   </template>
 
-
-<script>
-import { defineComponent } from 'vue'
-import { VideoPlayer } from '@videojs-player/vue'
-import 'video.js/dist/video-js.css'
-
-export default defineComponent({
-	components: {
-	VideoPlayer
+  <script>
+  export default {
+	data() {
+	  return {
+		mainVideoSrc: '/src/assets/test2.mp4',
+		clippedVideoSrc: '/src/assets/test.mp4'
+	  }
+	},
+	mounted() {
+	  this.trackLocation = this.trackLocation.bind(this);
+	  this.videoContainer = this.$refs.container;
+	  this.videoClipper = this.$refs.clipper;
+	  this.clippedVideo = this.$refs.clippedVideo;
+	  this.videoContainer.addEventListener('mousemove', this.trackLocation, false);
+	  this.videoContainer.addEventListener('touchstart', this.trackLocation, false);
+	  this.videoContainer.addEventListener('touchmove', this.trackLocation, false);
+	},
+	methods: {
+	  trackLocation(e) {
+		const rect = this.videoContainer.getBoundingClientRect();
+		const position = ((e.pageX - rect.left) / this.videoContainer.offsetWidth) * 100;
+		if (position <= 100) {
+		  this.videoClipper.style.width = position + '%';
+		  this.clippedVideo.style.width = (100 / position) * 100 + '%';
+		}
+	  }
 	}
-})
-</script>
+  }
+  </script>
 
+  <style scoped>
+  .video-compare-container {
+	background: #333;
+	margin: 2rem;
+	display: inline-block;
+	line-height: 0;
+	position: relative;
+	width: 90vw;
+	padding-top: 42.3%;
+  }
 
-<style scoped>
-.videoplayer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+  .video-main {
+	width: 100%;
+	position: absolute;
+	top: 0;
+	height: 100%;
+  }
 
-.video-container1 {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 2;
-}
+  .video-main::-webkit-media-controls {
+	position: relative;
+	z-index: 3;
+  }
 
-.video-container2 {
-  width: 100%;
-  height: 100%;
-  position: absolute;
-  z-index: 0;
-}
+  .video-clipper {
+	width: 50%;
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	overflow: hidden;
+  }
 
-
-
-</style>
-
+  .video-clipped {
+	width: 200%;
+	height: 100%;
+	z-index: 1;
+  }
+  </style>
