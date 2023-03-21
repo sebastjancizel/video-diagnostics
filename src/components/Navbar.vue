@@ -31,15 +31,36 @@ export default {
 
 <style scoped>
 .navbar {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	padding: 10px;
-	background-color: #f8f9fa;
-	border-bottom: 1px solid #dee2e6;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 100%;
+  width: 250px;
+  padding: 10px;
+  background-color: var(--vt-c-black);
+  color: var(--vt-c-text-dark-1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-right: 1px solid var(--vt-c-divider-dark-1);
 }
 
 h3 {
-	margin-right: 10px;
+  margin-bottom: 10px;
+}
+
+select {
+  width: 100%;
+  background-color: var(--vt-c-black-soft);
+  color: var(--vt-c-text-dark-1);
+  border: 1px solid var(--vt-c-divider-dark-1);
+  padding: 5px;
+  border-radius: 3px;
+}
+
+select:focus {
+  outline: none;
+  border-color: var(--vt-c-indigo);
 }
 </style>

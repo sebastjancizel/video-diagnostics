@@ -1,13 +1,14 @@
 <template>
 	<div class="video-compare-container" ref="container">
-		<video class="video-main" loop autoplay muted controls ref="mainVideo">
+		<video class="video-main" autoplay muted controls ref="mainVideo">
 			<source :src="mainVideoSrc" type="video/mp4">
 		</video>
 		<div class="video-clipper" ref="clipper">
-			<video class="video-clipped" loop autoplay muted controls ref="clippedVideo">
+			<video class="video-clipped" autoplay muted controls ref="clippedVideo">
 				<source :src="clippedVideoSrc" type="video/mp4">
 			</video>
 		</div>
+		<div class="split-line" ref="splitLine"></div>
 	</div>
 </template>
 
@@ -25,9 +26,12 @@ export default {
 		this.videoClipper = this.$refs.clipper;
 		this.clippedVideo = this.$refs.clippedVideo;
 		this.mainVideo = this.$refs.mainVideo;
+		this.splitLine = this.$refs.splitLine;
 		this.videoContainer.addEventListener('mousemove', this.trackLocation, false);
 		this.videoContainer.addEventListener('touchstart', this.trackLocation, false);
 		this.videoContainer.addEventListener('touchmove', this.trackLocation, false);
+		this.mainVideo.addEventListener('ended', this.syncVideos, false);
+		this.clippedVideo.addEventListener('ended', this.syncVideos, false);
 	},
 	methods: {
 		trackLocation(e) {
@@ -36,6 +40,7 @@ export default {
 			if (position <= 100) {
 				this.videoClipper.style.width = position + '%';
 				this.clippedVideo.style.width = (100 / position) * 100 + '%';
+				this.splitLine.style.left = position + '%';
 			}
 		},
 		setClippedVideoSrc(src) {
@@ -49,44 +54,63 @@ export default {
 			videoElement.load();
 			videoElement.play();
 		},
+
+		syncVideos() {
+			this.mainVideo.currentTime = 0;
+			this.clippedVideo.currentTime = 0;
+			this.mainVideo.play();
+			this.clippedVideo.play();
+		},
 	}
 }
 </script>
 
 <style scoped>
 .video-compare-container {
-	background: #333;
-	margin: 0 auto;
-	display: inline-block;
-	line-height: 0;
-	position: relative;
-	width: 90vw;
-	padding-top: 42.3%;
+  background: #333;
+  margin: 0 auto;
+  display: inline-block;
+  line-height: 0;
+  position: absolute;
+  left: 250px; /* Width of the navbar */
+  top: 0;
+  width: calc(100% - 250px); /* Subtract the navbar width */
+  padding-top: 42.3%;
 }
 
 .video-main {
-	width: 100%;
-	position: absolute;
-	top: 0;
-	height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  height: 100%;
 }
 
 .video-main::-webkit-media-controls {
-	position: relative;
-	z-index: 3;
+  position: relative;
+  z-index: 3;
 }
 
 .video-clipper {
-	width: 50%;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	overflow: hidden;
+  width: 50%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  overflow: hidden;
 }
 
 .video-clipped {
-	width: 200%;
-	height: 100%;
-	z-index: 1;
+  width: 200%;
+  height: 100%;
+  z-index: 1;
 }
+.split-line {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 0.5px;
+  background: #fff;
+  z-index: 2;
+}
+
 </style>
+
