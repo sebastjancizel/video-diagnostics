@@ -24,6 +24,7 @@ export default {
 		this.videoContainer = this.$refs.container;
 		this.videoClipper = this.$refs.clipper;
 		this.clippedVideo = this.$refs.clippedVideo;
+		this.mainVideo = this.$refs.mainVideo;
 		this.videoContainer.addEventListener('mousemove', this.trackLocation, false);
 		this.videoContainer.addEventListener('touchstart', this.trackLocation, false);
 		this.videoContainer.addEventListener('touchmove', this.trackLocation, false);
@@ -36,7 +37,18 @@ export default {
 				this.videoClipper.style.width = position + '%';
 				this.clippedVideo.style.width = (100 / position) * 100 + '%';
 			}
-		}
+		},
+		setClippedVideoSrc(src) {
+			this.updateVideoSource(this.mainVideo, this.mainVideoSrc);
+			this.updateVideoSource(this.clippedVideo, src);
+			this.clippedVideoSrc = src;
+		},
+		updateVideoSource(videoElement, src) {
+			videoElement.pause();
+			videoElement.src = src;
+			videoElement.load();
+			videoElement.play();
+		},
 	}
 }
 </script>

@@ -1,12 +1,24 @@
-<script setup>
-import VideoPlayer from './components/VideoPlayer.vue'
-
-</script>
-
 <template>
-  <VideoPlayer />
+  <div id="app">
+    <Navbar @video-selected="changeClippedVideo"></Navbar>
+    <VideoCompare ref="videoCompare"></VideoCompare>
+  </div>
 </template>
 
-<style scoped>
+<script>
+import Navbar from './components/Navbar.vue';
+import VideoCompare from './components/VideoPlayer.vue';
 
-</style>
+export default {
+  name: 'App',
+  components: {
+    Navbar,
+    VideoCompare,
+  },
+  methods: {
+    changeClippedVideo(src) {
+      this.$refs.videoCompare.setClippedVideoSrc(src);
+    },
+  },
+};
+</script>

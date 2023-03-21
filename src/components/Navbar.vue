@@ -1,50 +1,45 @@
 <template>
-	<nav class="navbar">
-	  <ul>
-		<li v-for="(video, index) in videos" :key="index" @click="selectVideo(index)">
-		  {{ video.name }}
-		</li>
-	  </ul>
-	</nav>
-  </template>
+	<div class="navbar">
+		<h3>Select Video</h3>
+		<select v-model="selectedVideo" @change="onVideoChange">
+			<option v-for="video in videoList" :key="video.id" :value="video.src">
+				{{ video.title }}
+			</option>
+		</select>
+	</div>
+</template>
 
-  <script>
-  export default {
-	props: {
-	  videos: Array, // an array of objects that contain information about the videos
-	  selectVideo: Function // a function that is called when a video is selected
-	}
-  }
-  </script>
+<script>
+export default {
+	name: 'Navbar',
+	data() {
+		return {
+			selectedVideo: '',
+			videoList: [
+				{ id: 1, title: 'Video 1', src: '/src/assets/test.mp4' },
+				{ id: 2, title: 'Video 2', src: '/src/assets/test2.mp4' },
+			],
+		};
+	},
+	methods: {
+		onVideoChange() {
+			this.$emit('video-selected', this.selectedVideo);
+		},
+	},
+};
+</script>
 
-  <style>
-  .navbar {
-	position: fixed;
-	top: 0;
-	right: 0;
-	width: 200px;
-	height: 100%;
-	background: #333;
-	color: white;
-	font-size: 1.2em;
+<style scoped>
+.navbar {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-  }
+	padding: 10px;
+	background-color: #f8f9fa;
+	border-bottom: 1px solid #dee2e6;
+}
 
-  .navbar ul {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-  }
-
-  .navbar li {
-	padding: 1rem;
-	cursor: pointer;
-  }
-
-  .navbar li:hover {
-	background: white;
-	color: #333;
-  }
-  </style>
+h3 {
+	margin-right: 10px;
+}
+</style>
