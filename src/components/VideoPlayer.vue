@@ -16,8 +16,8 @@
 export default {
 	data() {
 		return {
+			clippedVideoSrc: '/src/assets/test.mp4',
 			mainVideoSrc: '/src/assets/test2.mp4',
-			clippedVideoSrc: '/src/assets/test.mp4'
 		}
 	},
 	mounted() {

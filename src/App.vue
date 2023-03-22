@@ -15,6 +15,11 @@ export default {
     Navbar,
     VideoCompare,
   },
+  data() {
+    return {
+      selectedVideo: '',
+    }
+  },
   methods: {
     changeClippedVideo(src) {
       this.$refs.videoCompare.setClippedVideoSrc(src);
