@@ -16,7 +16,7 @@ export default {
 		return {
 			selectedVideo: '',
 			videoList: [
-				{ id: 1, title: 'Video 1', src: '/src/assets/test.mp4' },
+				{ id: 1, title: 'Video 1', src: '/src/assets/compression.mp4' },
 				{ id: 2, title: 'Video 2', src: '/src/assets/test2.mp4' },
 			],
 		};
@@ -62,5 +62,6 @@ select {
 select:focus {
   outline: none;
   border-color: var(--vt-c-indigo);
+
 }
 </style>
