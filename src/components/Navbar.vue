@@ -1,6 +1,5 @@
 <template>
 	<div class="navbar">
-		<h3>Select Video</h3>
 		<div class="video-list">
 			<div v-for="video in videoList" :key="video.id" class="video-tile" @click="onVideoChange(video.src)">
 				{{ video.title }}
