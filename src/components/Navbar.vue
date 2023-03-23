@@ -11,25 +11,38 @@
 
 <script>
 export default {
-	name: 'Navbar',
-	data() {
-		return {
-			selectedVideo: '',
-			videoList: [
-				{ id: 1, title: 'Shuffleboard', src: '/src/assets/test.mp4' },
-				{ id: 2, title: 'GT Video', src: '/src/assets/test2.mp4' },
-				{ id: 3, title: 'Compressed Video', src: '/src/assets/compression.mp4' },
-			],
-		};
-	},
-	methods: {
-		onVideoChange(src) {
-			console.log(src);
-			this.$emit('video-selected', src);
-		},
-	},
+  name: 'Navbar',
+  data() {
+    return {
+      selectedVideo: '',
+      videoList: [],
+    };
+  },
+  async mounted() {
+    this.populateVideoList();
+  },
+  methods: {
+    async populateVideoList() {
+      // Import all mp4 files in /src/assets/videos folder
+      const videoImports = import.meta.glob('/src/assets/videos/*.mp4');
+
+      // Iterate through the imports and create the video objects
+      let id = 1;
+      for (const [src, importFunction] of Object.entries(videoImports)) {
+        const file = await importFunction();
+        const title = src.split('/').pop().replace('.mp4', '');
+        this.videoList.push({ "id": id, "title": title, "src": src });
+        id++;
+      }
+    },
+    onVideoChange(src) {
+      console.log(src);
+      this.$emit('video-selected', src);
+    },
+  },
 };
 </script>
+
 
 <style scoped>
 .navbar {

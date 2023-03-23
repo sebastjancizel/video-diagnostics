@@ -24,8 +24,8 @@
 export default {
 	data() {
 		return {
-			clippedVideoSrc: '/src/assets/test.mp4',
-			mainVideoSrc: '/src/assets/test2.mp4',
+			clippedVideoSrc: '/src/assets/videos/shuffleboard.mp4',
+			mainVideoSrc: '/src/assets/videos/bunny-gt.mp4',
 			isFullscreen: false,
 		}
 	},
@@ -175,21 +175,26 @@ export default {
 	width: 30%;
 	background-color: var(--vt-c-black-soft);
 	color: var(--vt-c-text-dark-1);
-	padding: 10px;
-	border-radius: 3px;
+	padding: 12px 20px;
+	border-radius: 5px;
 	cursor: pointer;
 	margin-bottom: 10px;
 	font-size: 16px;
+	border: none;
+	transition: background-color 0.2s, color 0.2s;
+	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .video-button:hover {
 	background-color: var(--vt-c-indigo-hover);
 	color: var(--vt-c-text-dark-1);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
 
 .button-container {
 	display: flex;
 	justify-content: center;
+	align-items: center;
 	gap: 10px;
 	position: fixed;
 	bottom: 20px;
@@ -201,5 +206,6 @@ export default {
 	box-sizing: border-box;
 	z-index: 4;
 }
+
 </style>
 
