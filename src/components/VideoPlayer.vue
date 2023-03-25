@@ -11,11 +11,15 @@
 			</div>
 			<div class="split-line" ref="splitLine"></div>
 		</div>
+		<div class="video-labels" ref="videoLabels">
+			<span class="video-label">LEFT: {{ videoLabels.clipped }}</span>
+			<span class="video-label">RIGHT: {{ videoLabels.main }}</span>
+		</div>
 		<div class="button-container">
-			<button style="grid-column: 1" class="video-button" @click="swapVideos">Swap Videos</button>
-			<button style="grid-column: 2" class="video-button" @click="resumeVideos">Resume Videos</button>
-			<button style="grid-column: 3" class="video-button" @click="pauseVideos">Pause Videos</button>
-			<button style="grid-column: 4" class="video-button" @click="toggleFullscreen">Toggle Fullscreen</button>
+			<button class="video-button" @click="swapVideos">Swap Videos</button>
+			<button class="video-button" @click="resumeVideos">Resume Videos</button>
+			<button class="video-button" @click="pauseVideos">Pause Videos</button>
+			<button class="video-button" @click="toggleFullscreen">Toggle Fullscreen</button>
 		</div>
 	</div>
 </template>
@@ -42,6 +46,14 @@ export default {
 		this.mainVideo.addEventListener('ended', this.syncVideos, false);
 		this.clippedVideo.addEventListener('ended', this.syncVideos, false);
 	},
+	computed: {
+		videoLabels() {
+			return {
+				main: this.mainVideoSrc.split('/').pop(),
+				clipped: this.clippedVideoSrc.split('/').pop(),
+			}
+		}
+	},
 	methods: {
 		trackLocation(e) {
 			const rect = this.videoContainer.getBoundingClientRect();
@@ -56,6 +68,7 @@ export default {
 			this.updateVideoSource(this.mainVideo, this.mainVideoSrc);
 			this.updateVideoSource(this.clippedVideo, src);
 			this.clippedVideoSrc = src;
+			this.videoLabels.clipped = this.getFileName(src);
 		},
 		updateVideoSource(videoElement, src) {
 			videoElement.pause();
@@ -79,6 +92,9 @@ export default {
 			// Update the video sources
 			this.updateVideoSource(this.mainVideo, this.mainVideoSrc);
 			this.updateVideoSource(this.clippedVideo, this.clippedVideoSrc);
+
+			this.videoLabels.main = this.getFileName(this.mainVideoSrc);
+			this.videoLabels.clipped = this.getFileName(this.clippedVideoSrc);
 
 			// Sync the videos
 			this.syncVideos();
@@ -112,6 +128,11 @@ export default {
 			}
 		},
 
+		getFileName(src) {
+			// Get the file name from the src
+			// strip the extension
+			return src.split('/').pop();
+		}
 	}
 }
 </script>
@@ -120,18 +141,20 @@ export default {
 .container {
 	display: grid;
 	grid-column: 2;
-	grid-template-rows: calc(100vh - 100px) 50px 50px;
-	height: 100vh;
+	grid-template-rows: auto 50px 50px;
+	/* height: 100vh; */
+	height: 99vh;
 }
+
 .video-compare-container {
-	/* background: var(--vt-c-black-soft); */
-	margin: 0 auto;
-	position: absolute;
+	margin: auto;
+	/* position: absolute; */
 	display: inline-block;
 	top: 0;
-	width: 100%;
-	padding-top: 42.3%;
-	max-width: 80vw;
+	width: 95%;
+	/* padding-top: 56.25%; */
+	height: calc(100vh - 200px);
+	max-width: 100vw;
 	overflow: hidden;
 	grid-row: 1;
 }
@@ -142,6 +165,8 @@ export default {
 	top: 0;
 	height: 100%;
 	max-height: 100vh;
+	object-fit: contain;
+	grid-row: 1;
 }
 
 .video-clipper {
@@ -151,12 +176,15 @@ export default {
 	position: absolute;
 	overflow: hidden;
 	max-height: 100vh;
+	grid-row: 1;
 }
 
 .video-clipped {
 	width: 200%;
 	height: 100%;
 	z-index: 1;
+	object-fit: contain;
+	grid-row: 1;
 }
 
 .split-line {
@@ -192,12 +220,23 @@ export default {
 	width: auto;
 	display: grid;
 	gap: 10px;
-	padding: 0 0px;
+	padding: 10px;
 	box-sizing: border-box;
 	z-index: 4;
 	grid-row: 3;
-	grid-template-columns: 4;
+	grid-template-columns: repeat(4, 1fr);
 }
 
+.video-labels {
+	display: flex;
+	justify-content: space-between;
+	padding: 0 2.5%;
+	grid-row: 2;
+}
+
+.video-label {
+	font-size: 16px;
+	color: #fff;
+}
 </style>
 

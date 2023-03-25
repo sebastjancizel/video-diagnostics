@@ -48,7 +48,7 @@ export default {
 .navbar {
 	grid-column: 1;
 	height: 100%;
-	width: 250px;
+	width: var(--navbar-width);
 	padding: 10px;
 	background-color: var(--vt-c-black);
 	color: var(--vt-c-text-dark-1);
