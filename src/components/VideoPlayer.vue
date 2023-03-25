@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div class="container">
 		<div class="video-compare-container" ref="container">
 			<video class="video-main" :class="{ 'fullscreen': isFullscreen }" autoplay muted ref="mainVideo">
 				<source :src="mainVideoSrc" type="video/mp4">
@@ -12,10 +12,10 @@
 			<div class="split-line" ref="splitLine"></div>
 		</div>
 		<div class="button-container">
-			<button class="video-button" @click="swapVideos">Swap Videos</button>
-			<button class="video-button" @click="resumeVideos">Resume Videos</button>
-			<button class="video-button" @click="pauseVideos">Pause Videos</button>
-			<button class="video-button" @click="toggleFullscreen">Toggle Fullscreen</button>
+			<button style="grid-column: 1" class="video-button" @click="swapVideos">Swap Videos</button>
+			<button style="grid-column: 2" class="video-button" @click="resumeVideos">Resume Videos</button>
+			<button style="grid-column: 3" class="video-button" @click="pauseVideos">Pause Videos</button>
+			<button style="grid-column: 4" class="video-button" @click="toggleFullscreen">Toggle Fullscreen</button>
 		</div>
 	</div>
 </template>
@@ -117,20 +117,23 @@ export default {
 </script>
 
 <style scoped>
+.container {
+	display: grid;
+	grid-column: 2;
+	grid-template-rows: calc(100vh - 100px) 50px 50px;
+	height: 100vh;
+}
 .video-compare-container {
-	background: var(--vt-c-black-soft);
+	/* background: var(--vt-c-black-soft); */
 	margin: 0 auto;
-	display: inline-block;
-	line-height: 0;
 	position: absolute;
-	left: 250px;
-	/* Width of the navbar */
+	display: inline-block;
 	top: 0;
-	width: calc(100% - 250px);
-	/* Subtract the navbar width */
+	width: 100%;
 	padding-top: 42.3%;
-	max-width: 100vw;
+	max-width: 80vw;
 	overflow: hidden;
+	grid-row: 1;
 }
 
 .video-main {
@@ -141,16 +144,11 @@ export default {
 	max-height: 100vh;
 }
 
-.video-main::-webkit-media-controls {
-	position: relative;
-	z-index: 3;
-}
-
 .video-clipper {
-	width: 50%;
-	position: absolute;
 	top: 0;
 	bottom: 0;
+	width: 50%;
+	position: absolute;
 	overflow: hidden;
 	max-height: 100vh;
 }
@@ -168,17 +166,16 @@ export default {
 	width: 0.5px;
 	background: #fff;
 	z-index: 2;
-	max-height: 100vh;
+	grid-row: 1;
 }
 
 .video-button {
-	width: 30%;
+	width: auto;
 	background-color: var(--vt-c-black-soft);
 	color: var(--vt-c-text-dark-1);
 	padding: 12px 20px;
 	border-radius: 5px;
 	cursor: pointer;
-	margin-bottom: 10px;
 	font-size: 16px;
 	border: none;
 	transition: background-color 0.2s, color 0.2s;
@@ -192,19 +189,14 @@ export default {
 }
 
 .button-container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
+	width: auto;
+	display: grid;
 	gap: 10px;
-	position: fixed;
-	bottom: 20px;
-	left: 50%;
-	transform: translateX(-50%);
-	width: calc(80% - 500px);
-	/* Subtract the navbar width */
 	padding: 0 0px;
 	box-sizing: border-box;
 	z-index: 4;
+	grid-row: 3;
+	grid-template-columns: 4;
 }
 
 </style>
