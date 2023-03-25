@@ -74,7 +74,7 @@ h3 {
 }
 
 .video-tile:hover {
-  background-color: var(--vt-c-indigo-hover);
+  background-color: var(--vt-c-indigo);
   color: var(--vt-c-text-dark-1);
 }
 </style>

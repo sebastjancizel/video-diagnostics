@@ -211,7 +211,7 @@ export default {
 }
 
 .video-button:hover {
-	background-color: var(--vt-c-indigo-hover);
+	background-color: var(--vt-c-indigo);
 	color: var(--vt-c-text-dark-1);
 	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
 }
