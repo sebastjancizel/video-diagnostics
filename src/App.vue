@@ -27,3 +27,11 @@ export default {
   },
 };
 </script>
+
+
+<style scoped>
+#app{
+  display: grid;
+  grid-template-columns: 250px auto;
+}
+</style>

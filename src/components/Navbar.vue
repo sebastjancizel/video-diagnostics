@@ -46,18 +46,12 @@ export default {
 
 <style scoped>
 .navbar {
-	position: fixed;
-	left: 0;
-	top: 0;
+	grid-column: 1;
 	height: 100%;
 	width: 250px;
 	padding: 10px;
 	background-color: var(--vt-c-black);
 	color: var(--vt-c-text-dark-1);
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: center;
 	border-right: 1px solid var(--vt-c-divider-dark-1);
 }
 
@@ -74,7 +68,7 @@ h3 {
   background-color: var(--vt-c-black-soft);
   color: var(--vt-c-text-dark-1);
   padding: 10px;
-  border-radius: 3px;
+  border-radius: 6px;
   cursor: pointer;
   margin-bottom: 10px;
 }
