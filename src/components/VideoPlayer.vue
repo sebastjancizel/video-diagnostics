@@ -81,7 +81,9 @@ export default {
                 this.mainVideoSrc = src;
                 this.videoLabels.main = this.getFileName(src);
             }
+            this.syncVideos();
         },
+
         updateVideoSource(videoElement, src) {
             videoElement.pause();
             videoElement.src = src;
