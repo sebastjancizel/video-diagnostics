@@ -32,6 +32,6 @@ export default {
 <style scoped>
 #app{
   display: grid;
-  grid-template-columns: var(--navbar-width) auto;
+  grid-template-columns: auto auto;
 }
 </style>

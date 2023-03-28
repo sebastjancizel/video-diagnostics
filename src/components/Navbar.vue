@@ -47,12 +47,13 @@ export default {
 <style scoped>
 .navbar {
 	grid-column: 1;
-	height: 100%;
-	width: var(--navbar-width);
+	height: 100vh;
+	width: auto;
 	padding: 10px;
 	background-color: var(--vt-c-black);
 	color: var(--vt-c-text-dark-1);
 	border-right: 1px solid var(--vt-c-divider-dark-1);
+    overflow-y: auto;
 }
 
 h3 {
@@ -64,7 +65,7 @@ h3 {
 }
 
 .video-tile {
-  width: 100%;
+  width: auto;
   background-color: var(--vt-c-black-soft);
   color: var(--vt-c-text-dark-1);
   padding: 10px;
