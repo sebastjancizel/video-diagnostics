@@ -1,16 +1,20 @@
 # video-diagnostic-app
 
-This template should help get you started developing with Vue 3 in Vite.
+## Project Description
+This is a frontend for comparing videos. It features a video player with a comparison slider that allows the user to compare the two videos.
 
-## Recommended IDE Setup
-
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+This is a very early version of the app. To be able to use it you have to follow the project set-up below.
 
 ## Project Setup
+
+### Install Node.js
+First you need to install Node.js. For debian based systems you can use the following command:
+
+```sh
+sudo apt install nodejs
+```
+
+### Install Dependencies
 
 ```sh
 npm install
@@ -22,8 +26,8 @@ npm install
 npm run dev
 ```
 
-### Compile and Minify for Production
+This will run the app locally in development mode. To point the app to the folder with the videos you want to compare, you can symlink the ./src/assets/videos folder to the folder with the videos. For example:
 
 ```sh
-npm run build
+ln -s ./src/assets/videos /path/to/videos
 ```
