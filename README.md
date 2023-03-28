@@ -26,8 +26,8 @@ npm install
 npm run dev
 ```
 
-This will run the app locally in development mode. To point the app to the folder with the videos you want to compare, you can symlink the ./src/assets/videos folder to the folder with the videos. For example:
+This will run the app locally in development mode. Once the app is running it will display some sample videos. To point the app to the folder with the videos you want to compare, you can symlink the `./src/assets/videos` folder to the folder with the videos. For example:
 
 ```sh
-ln -s ./src/assets/videos /path/to/videos
+ln -s /path/to/videos ./src/assets/videos
 ```
