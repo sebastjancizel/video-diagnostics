@@ -240,7 +240,6 @@ export default {
     grid-row: 3;
     grid-template-columns: repeat(4, 1fr);
 }
-
 .video-labels {
     display: flex;
     justify-content: space-between;
@@ -248,9 +247,31 @@ export default {
     grid-row: 2;
 }
 
-.video-label {
+.video-labels label {
+    display: flex;
+    align-items: center;
+    font-family: 'Arial', sans-serif;
     font-size: 16px;
     color: #fff;
+    cursor: pointer;
+    user-select: none;
+}
+
+.video-labels input[type="radio"] {
+    display: none;
+}
+
+.video-labels .video-label {
+    padding: 5px 10px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+
+.video-labels input[type="radio"]:checked + .video-label {
+    background-color: var(--vt-c-indigo);
+    color: #fff;
+    border-color: var(--vt-c-indigo);
 }
 </style>
 
