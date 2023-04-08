@@ -1,81 +1,151 @@
 <template>
-	<div class="navbar">
-		<div class="video-list">
-			<div v-for="video in videoList" :key="video.id" class="video-tile" @click="onVideoChange(video.src)">
-				{{ video.title }}
-			</div>
-		</div>
-	</div>
+  <div class="navbar">
+    <div class="scene-list">
+      <div
+        v-for="scene in sceneList"
+        :key="scene.id"
+        class="scene-folder"
+        @click="toggleScene(scene.id)"
+      >
+        <div class="scene-title">
+          <font-awesome-icon class="folder-icon" icon="folder" />{{ scene.title }}
+        </div>
+        <div v-if="scene.isOpen">
+          <div
+            v-for="video in scene.videoList"
+            :key="video.id"
+            class="video-tile"
+            @click.stop="onVideoChange(video.src)"
+          >
+            <font-awesome-icon class="tree-branch" icon="video" />
+            {{ video.title }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 
 <script>
+
 export default {
-  name: 'Navbar',
+  name: "Navbar",
   data() {
     return {
-      selectedVideo: '',
-      videoList: [],
+      selectedVideo: "",
+      sceneList: [],
     };
   },
   async mounted() {
-    this.populateVideoList();
+    this.populateSceneList();
   },
   methods: {
-    async populateVideoList() {
+    async populateSceneList() {
       // Import all mp4 files in /src/assets/videos folder
-      const videoImports = import.meta.glob('/src/assets/videos/*.mp4');
+      const videoImports = import.meta.glob("/src/assets/videos/*/*.mp4");
 
       // Iterate through the imports and create the video objects
-      let id = 1;
+      let sceneId = 1;
+      const scenes = {};
+
       for (const [src, importFunction] of Object.entries(videoImports)) {
         const file = await importFunction();
-        const title = src.split('/').pop().replace('.mp4', '');
-        this.videoList.push({ "id": id, "title": title, "src": src });
-        id++;
+        const pathParts = src.split("/");
+        const sceneTitle = pathParts[pathParts.length - 2];
+        const videoTitle = pathParts.pop().replace(".mp4", "");
+
+        if (!scenes[sceneTitle]) {
+          scenes[sceneTitle] = {
+            id: sceneId,
+            title: sceneTitle,
+            isOpen: false,
+            videoList: [],
+          };
+          sceneId++;
+        }
+
+        scenes[sceneTitle].videoList.push({
+          id: scenes[sceneTitle].videoList.length + 1,
+          title: videoTitle,
+          src: src,
+        });
       }
+
+      this.sceneList = Object.values(scenes);
+    },
+    toggleScene(sceneId) {
+      this.sceneList = this.sceneList.map((scene) =>
+        scene.id === sceneId ? { ...scene, isOpen: !scene.isOpen } : scene
+      );
     },
     onVideoChange(src) {
-      console.log(src);
-      this.$emit('video-selected', src);
+      this.$emit("video-selected", src);
     },
   },
 };
 </script>
 
-
 <style scoped>
 .navbar {
-	grid-column: 1;
-	height: 100vh;
-	width: auto;
-	padding: 10px;
-	background-color: var(--vt-c-black);
-	color: var(--vt-c-text-dark-1);
-	border-right: 1px solid var(--vt-c-divider-dark-1);
-    overflow-y: auto;
+  grid-column: 1;
+  height: 100vh;
+  width: auto;
+  padding: 10px;
+  background-color: var(--vt-c-black);
+  color: var(--vt-c-text-dark-1);
+  border-right: 1px solid var(--vt-c-divider-dark-1);
+  overflow-y: auto;
 }
 
 h3 {
-	margin-bottom: 10px;
+  margin-bottom: 10px;
 }
 
-.video-list {
+.scene-list {
   width: 100%;
 }
 
+
+.scene-folder {
+  display: flex;
+  flex-direction: column;
+  width: auto;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+  background-color: var(--vt-c-black-soft);
+  border-radius: 6px;
+}
+
+.scene-title {
+  display: flex;
+  align-items: center;
+}
+
+.folder-icon {
+  margin-right: 5px;
+}
+
 .video-tile {
+  display: flex;
+  align-items: center;
   width: auto;
   background-color: var(--vt-c-black-soft);
   color: var(--vt-c-text-dark-1);
-  padding: 10px;
+  padding: 5px 10px;
   border-radius: 6px;
   cursor: pointer;
-  margin-bottom: 10px;
+  margin-left: 20px;
+  margin-bottom: 5px;
 }
 
 .video-tile:hover {
   background-color: var(--vt-c-indigo);
   color: var(--vt-c-text-dark-1);
+}
+
+.tree-branch {
+  margin-right: 5px;
 }
 </style>

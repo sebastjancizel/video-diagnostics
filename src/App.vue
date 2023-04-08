@@ -32,6 +32,6 @@ export default {
 <style scoped>
 #app{
   display: grid;
-  grid-template-columns: auto auto;
+  grid-template-columns: minmax(auto, 20vw) auto;
 }
 </style>
