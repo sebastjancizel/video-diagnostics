@@ -8,7 +8,7 @@
         @click="toggleScene(scene.id)"
       >
         <div class="scene-title">
-          <font-awesome-icon class="folder-icon" icon="folder" />{{ scene.title }}
+          <font-awesome-icon class="folder-icon" icon="folder"/>{{ scene.title }}
         </div>
         <div v-if="scene.isOpen">
           <div
@@ -28,9 +28,14 @@
 
 
 <script>
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+
 
 export default {
   name: "Navbar",
+  components: {
+    FontAwesomeIcon,
+  },
   data() {
     return {
       selectedVideo: "",
@@ -70,6 +75,7 @@ export default {
           title: videoTitle,
           src: src,
         });
+        console.log(scenes[sceneTitle].videoList.length + 1);
       }
 
       this.sceneList = Object.values(scenes);
@@ -118,6 +124,11 @@ h3 {
   border-radius: 6px;
 }
 
+.scene-folder:hover {
+  background-color: var(--vt-c-black-mute);
+  color: var(--vt-c-text-dark-1);
+}
+
 .scene-title {
   display: flex;
   align-items: center;
@@ -131,7 +142,6 @@ h3 {
   display: flex;
   align-items: center;
   width: auto;
-  background-color: var(--vt-c-black-soft);
   color: var(--vt-c-text-dark-1);
   padding: 5px 10px;
   border-radius: 6px;
