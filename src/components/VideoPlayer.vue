@@ -41,12 +41,12 @@ export default {
     }
   },
   mounted() {
-    this.trackLocation  = this.trackLocation.bind(this);
+    this.trackLocation = this.trackLocation.bind(this);
     this.videoContainer = this.$refs.container;
-    this.videoClipper   = this.$refs.clipper;
-    this.clippedVideo   = this.$refs.clippedVideo;
-    this.mainVideo      = this.$refs.mainVideo;
-    this.splitLine      = this.$refs.splitLine;
+    this.videoClipper = this.$refs.clipper;
+    this.clippedVideo = this.$refs.clippedVideo;
+    this.mainVideo = this.$refs.mainVideo;
+    this.splitLine = this.$refs.splitLine;
 
     this.videoContainer.addEventListener('mousemove', this.trackLocation, false);
     this.videoContainer.addEventListener('touchstart', this.trackLocation, false);
@@ -89,7 +89,13 @@ export default {
       videoElement.pause();
       videoElement.src = src;
       videoElement.load();
-      videoElement.play();
+
+      // Listen for the 'canplay' event and then call play()
+      videoElement.addEventListener('canplay', function onCanPlay() {
+        videoElement.play();
+        // Remove the event listener to avoid multiple calls
+        videoElement.removeEventListener('canplay', onCanPlay);
+      });
     },
 
     syncVideos() {

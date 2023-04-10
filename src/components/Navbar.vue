@@ -1,22 +1,12 @@
 <template>
   <div class="navbar">
     <div class="scene-list">
-      <div
-        v-for="scene in sceneList"
-        :key="scene.id"
-        class="scene-folder"
-        @click="toggleScene(scene.id)"
-      >
+      <div v-for="scene in sceneList" :key="scene.id" class="scene-folder" @click="toggleScene(scene.id)">
         <div class="scene-title">
-          <font-awesome-icon class="folder-icon" icon="folder"/>{{ scene.title }}
+          <font-awesome-icon class="folder-icon" :icon="scene.isOpen ? 'folder-open' : 'folder'" />{{ scene.title }}
         </div>
         <div v-if="scene.isOpen">
-          <div
-            v-for="video in scene.videoList"
-            :key="video.id"
-            class="video-tile"
-            @click.stop="onVideoChange(video.src)"
-          >
+          <div v-for="video in scene.videoList" :key="video.id" class="video-tile" @click.stop="onVideoChange(video.src)">
             <font-awesome-icon class="tree-branch" icon="video" />
             {{ video.title }}
           </div>
@@ -75,7 +65,6 @@ export default {
           title: videoTitle,
           src: src,
         });
-        console.log(scenes[sceneTitle].videoList.length + 1);
       }
 
       this.sceneList = Object.values(scenes);
