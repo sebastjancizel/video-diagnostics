@@ -1,11 +1,12 @@
 <template>
   <div class="container">
     <div class="video-compare-container" ref="container">
-      <video class="video-main" :class="{ 'fullscreen': isFullscreen }" autoplay muted ref="mainVideo">
+      <video class="video-main" :class="{ 'fullscreen': isFullscreen }" autoplay muted ref="mainVideo" preload="auto">
         <source :src="mainVideoSrc" type="video/mp4">
       </video>
       <div class="video-clipper" ref="clipper">
-        <video class="video-clipped" :class="{ 'fullscreen': isFullscreen }" autoplay muted ref="clippedVideo">
+        <video class="video-clipped" :class="{ 'fullscreen': isFullscreen }" autoplay muted ref="clippedVideo"
+          preload="auto">
           <source :src="clippedVideoSrc" type="video/mp4">
         </video>
       </div>
@@ -53,6 +54,7 @@ export default {
     this.videoContainer.addEventListener('touchmove', this.trackLocation, false);
     this.mainVideo.addEventListener('ended', this.syncVideos, false);
     this.clippedVideo.addEventListener('ended', this.syncVideos, false);
+
   },
   computed: {
     videoLabels() {
@@ -72,17 +74,22 @@ export default {
         this.splitLine.style.left = position + '%';
       }
     },
-    setClippedVideoSrc(src) {
-      if (this.selectedVideo === 'LEFT') {
-        this.updateVideoSource(this.clippedVideo, src);
-        this.clippedVideoSrc = src;
-        this.videoLabels.clipped = this.getFileName(src);
-      } else {
-        this.updateVideoSource(this.mainVideo, src);
-        this.mainVideoSrc = src;
-        this.videoLabels.main = this.getFileName(src);
+
+    async setClippedVideoSrc(src) {
+      try {
+        if (this.selectedVideo === 'LEFT') {
+          await this.updateVideoSource(this.clippedVideo, src);
+          this.clippedVideoSrc = src;
+          this.videoLabels.clipped = this.getFileName(src);
+        } else {
+          await this.updateVideoSource(this.mainVideo, src);
+          this.mainVideoSrc = src;
+          this.videoLabels.main = this.getFileName(src);
+        }
+        await this.syncVideos();
+      } catch (error) {
+        console.error('Error when setting the video source or syncing:', error);
       }
-      this.syncVideos();
     },
 
     updateVideoSource(videoElement, src) {
@@ -90,19 +97,29 @@ export default {
       videoElement.src = src;
       videoElement.load();
 
-      // Listen for the 'canplay' event and then call play()
-      videoElement.addEventListener('canplay', function onCanPlay() {
-        videoElement.play();
-        // Remove the event listener to avoid multiple calls
-        videoElement.removeEventListener('canplay', onCanPlay);
+      // Return a Promise that resolves when the video is ready to play
+      return new Promise((resolve) => {
+        videoElement.onloadedmetadata = () => {
+          resolve();
+        };
+        videoElement.onerror = () => {
+          resolve(); // Resolve even on error to not block the Promise chain
+        };
       });
     },
 
-    syncVideos() {
+    async syncVideos() {
+      console.log('syncing videos');
       this.mainVideo.currentTime = 0;
       this.clippedVideo.currentTime = 0;
-      this.mainVideo.play();
-      this.clippedVideo.play();
+
+      try {
+        await this.mainVideo.play();
+        await this.clippedVideo.play();
+      } catch (error) {
+        console.error('Error when trying to play videos:', error);
+        // Handle play error, for example by showing a user-friendly message
+      }
     },
 
     swapVideos() {
