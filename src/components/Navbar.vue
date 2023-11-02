@@ -1,9 +1,13 @@
 <template>
   <div class="navbar">
+    <div class="search-bar">
+      <input type="text" v-model="searchQuery" placeholder="Search videos..." />
+    </div>
     <div class="scene-list">
-      <div v-for="scene in sceneList" :key="scene.id" class="scene-folder" @click="toggleScene(scene.id)">
+      <div v-for="scene in filteredSceneList" :key="scene.id" class="scene-folder" @click="toggleScene(scene.id)">
         <div class="scene-title">
-          <font-awesome-icon class="folder-icon" :icon="scene.isOpen ? 'folder-open' : 'folder'" />{{ scene.title }}
+          <font-awesome-icon class="folder-icon" :icon="scene.isOpen ? 'folder-open' : 'folder'" />{{ scene.title
+          }}
         </div>
         <div v-if="scene.isOpen">
           <div v-for="video in scene.videoList" :key="video.id" class="video-tile" @click.stop="onVideoChange(video.src)">
@@ -30,10 +34,30 @@ export default {
     return {
       selectedVideo: "",
       sceneList: [],
+      searchQuery: "",
     };
   },
   async mounted() {
     this.populateSceneList();
+  },
+  computed: {
+    filteredSceneList() {
+      if (!this.searchQuery) {
+        return this.sceneList;
+      }
+
+      try {
+        const regex = new RegExp(this.searchQuery, 'i'); // 'i' for case insensitive
+
+        return this.sceneList.map(scene => ({
+          ...scene,
+          videoList: scene.videoList.filter(video => regex.test(video.title))
+        })).filter(scene => scene.videoList.length > 0);
+      } catch (e) {
+        // If the regex is invalid, return the full scene list
+        return this.sceneList;
+      }
+    }
   },
   methods: {
     async populateSceneList() {
@@ -146,5 +170,31 @@ h3 {
 
 .tree-branch {
   margin-right: 5px;
+}
+
+.search-bar {
+  margin-bottom: 20px;
+}
+
+.search-bar input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin: 0;
+  background-color: var(--vt-c-black-soft);
+  border: 1px solid var(--vt-c-divider-dark-1);
+  border-radius: 6px;
+  color: var(--vt-c-text-dark-1);
+  font-size: 1rem;
+}
+
+.search-bar input[type="text"]::placeholder {
+  color: var(--vt-c-text-dark-1);
+  opacity: 0.7;
+}
+
+.search-bar input[type="text"]:focus {
+  outline: none;
+  border-color: var(--vt-c-indigo);
+  box-shadow: 0 0 0 2px rgba(102, 123, 232, 0.3);
 }
 </style>
